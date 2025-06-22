@@ -6,9 +6,11 @@
 
 #include <zephyr/kernel.h>
 #include <zephyr/device.h>
+
 #include <zephyr/drivers/display.h>
 #include <zephyr/drivers/video.h>
 #include <zephyr/drivers/video-controls.h>
+
 #include <zephyr/logging/log.h>
 #include <lvgl.h>
 
@@ -16,7 +18,7 @@ LOG_MODULE_REGISTER(main, CONFIG_LOG_DEFAULT_LEVEL);
 
 int main(void)
 {
-	struct video_buffer *buffers[2];
+	struct video_buffer *buffers[CONFIG_VIDEO_BUFFER_POOL_NUM_MAX];
 	struct video_buffer *vbuf = &(struct video_buffer){};
 	const struct device *display_dev;
 	const struct device *video_dev;
@@ -69,7 +71,7 @@ int main(void)
 	/* Set format */
 	fmt.width = CONFIG_VIDEO_WIDTH;
 	fmt.height = CONFIG_VIDEO_HEIGHT;
-	fmt.pixelformat = VIDEO_PIX_FMT_RGB565;
+	fmt.pixelformat = VIDEO_FOURCC_FROM_STR(CONFIG_VIDEO_PIXEL_FORMAT);
 
 	if (video_set_format(video_dev, &fmt)) {
 		LOG_ERR("Unable to set up video format");

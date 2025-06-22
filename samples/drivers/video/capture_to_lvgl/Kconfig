@@ -23,6 +23,11 @@ config VIDEO_VFLIP
 	bool "Vertical flip"
 	default n
 
+config VIDEO_PIXEL_FORMAT
+	string "Pixel format of the video frame"
+	help
+	  Pixel format of the video frame. If not set, the default pixel format is used.
+
 endmenu
 
 source "Kconfig.zephyr"
